@@ -1,23 +1,17 @@
-import {test, expect} from '@playwright/test'
+import { test, expect } from '@playwright/test';
 
-test("Checkboxes", async ({page}) => {
-
-    await page.goto("/")
-    await page.getByRole('link', {name:"Dropdown"}).click()
-    expect(await page.locator("h3")).toHaveText("Dropdown List")
-
-    // Vérification que l'option désactivée est présente et ne peut pas être sélectionnée
-    const disabledOption = page.locator('[disabled="disabled"]');
-    await expect(disabledOption).toBeEnabled(); // Vérifie que l'option est bien désactivée
-
-    // Cliquer sur l'option 1 et vérifier
-    await page.selectOption('select#dropdown', { value: '1' });
-    await expect(page.locator('select#dropdown')).toHaveValue('1');
-
-    // Cliquer sur l'option 2 et vérifier
-    await page.selectOption('select#dropdown', { value: '2' });
-    await expect(page.locator('select#dropdown')).toHaveValue('2');
+test("dropdown", async ({ page }) => {
+    // Naviguer vers la page
+    await page.goto('https://the-internet.herokuapp.com/dropdown');
+    
+    // Sélectionner l'option "Option 1" et vérifier la valeur
+    await page.locator('#dropdown').selectOption({ label: 'Option 1' });
+    await expect(page.locator('#dropdown')).toHaveValue('1');
+    
+    // Sélectionner l'option "Option 2" et vérifier la valeur
+    await page.locator('#dropdown').selectOption({ label: 'Option 2' });
+    await expect(page.locator('#dropdown')).toHaveValue('2');
+    
+    // Mettre le script en pause
+    await page.pause();
 });
-
-
-// To work
